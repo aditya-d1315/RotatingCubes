@@ -6,7 +6,7 @@ var vertexShader, fragmentShader;
 
 var delay = 200;
 
-var NumCubeVertices = 36;
+var numCubeVertices = 36;
 
 var cube_verts  = []; 
 var cube_vert_cols = [];
@@ -80,26 +80,35 @@ window.onload = function init() {
 
 // all drawing is performed here
 function render(){
-	gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 	// center cube
-	M_comp = matMult(rotate4x4(-10., 'x'), matMult(rotate4x4(10., 'y'),  scale4x4(0.1, 0.1, 0.1) ));
+	M_comp = matMult(rotate4x4(-10., 'x'), matMult(rotate4x4(10., 'y'), scale4x4(0.1, 0.1, 0.1)));
 
 	gl.uniformMatrix4fv(M_comp_loc, false, flatten(M_comp));
-	gl.drawElements(gl.TRIANGLES, NumCubeVertices, gl.UNSIGNED_BYTE, 0);
+	gl.drawElements(gl.TRIANGLES, numCubeVertices, gl.UNSIGNED_BYTE, 0);
 
 	// TODO : Cube Rotating about X
+	M_comp = matMult(rotate4x4(theta, 'y'), matMult(translate4x4(-0.5, 0, 0), scale4x4(0.1, 0.1, 0.1)));
+	gl.uniformMatrix4fv(M_comp_loc, false, flatten(M_comp));
+	gl.drawElements(gl.TRIANGLES, numCubeVertices, gl.UNSIGNED_BYTE, 0);
 
 	// TODO : Cube Rotation about Y
-
+	M_comp = matMult(rotate4x4(theta, 'x'), matMult(translate4x4(0, 0.5, 0), scale4x4(0.1, 0.1, 0.1)));
+	gl.uniformMatrix4fv(M_comp_loc, false, flatten(M_comp));
+	gl.drawElements(gl.TRIANGLES, numCubeVertices, gl.UNSIGNED_BYTE, 0);
 
 	// TODO : Cube Rotation about Z
-
+	M_comp = matMult(rotate4x4(theta, 'z'), matMult(translate4x4(-0.5, 0, 0), scale4x4(0.1, 0.1, 0.1)));
+	gl.uniformMatrix4fv(M_comp_loc, false, flatten(M_comp));
+	gl.drawElements(gl.TRIANGLES, numCubeVertices, gl.UNSIGNED_BYTE, 0);
 
 	// increment angle
+	theta += 0.2;
 
-	setTimeout(
-      function (){requestAnimFrame(render);}, delay
+	setTimeout(function() {
+		requestAnimFrame(render);
+		}, delay
  	);
 }
 
@@ -110,7 +119,7 @@ function createColorCube() {
 }
 
 // create indices for each  triangle; these point to the vertex
-function getCubeElementIndices () {
+function getCubeElementIndices() {
 	return [
 		1, 0, 3,
 		3, 2, 1,
@@ -129,20 +138,20 @@ function getCubeElementIndices () {
 
 function getCubeVertices() {
 	return [
-        vec3( -1.00, -1.00,  1.00 ),
-        vec3( -1.00,  1.00,  1.00 ),
-        vec3(  1.00,  1.00,  1.00 ),
-        vec3(  1.00, -1.00,  1.00 ),
-        vec3( -1.00, -1.00,  -1.00 ),
-        vec3( -1.00,  1.00,  -1.00 ),
-        vec3(  1.00,  1.00,  -1.00 ),
-        vec3(  1.00, -1.00,  -1.00 )
+        vec3(-1.00, -1.00, 1.00),
+        vec3(-1.00,  1.00, 1.00),
+        vec3(1.00,  1.00, 1.00),
+        vec3(1.00, -1.00, 1.00),
+        vec3(-1.00, -1.00, -1.00),
+        vec3(-1.00,  1.00, -1.00),
+        vec3(1.00,  1.00, -1.00),
+        vec3(1.00, -1.00, -1.00)
     ];
 }
 function getCubeVertexColors() {
 	let cols = [];
-	for (let k = 0; k < 8; k++)
-		cols.push (Math.random(), Math.random(), Math.random(), 1.);
+	for (let k = 0; k < 8; k ++)
+		cols.push(Math.random(), Math.random(), Math.random(), 1.);
 
 	return cols;
 }
