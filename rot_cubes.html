@@ -18,7 +18,7 @@ varying vec4 color;
 uniform mat4 M_comp;
 
 void main() {
-	gl_Position = M_comp*vec4(vPosition, 1.);
+	gl_Position = M_comp * vec4(vPosition, 1.);
 	color = vec4(vColor, 1.);
 }
 </script>
